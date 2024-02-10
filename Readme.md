@@ -328,3 +328,78 @@ type SkillType = (typeof SKILLS)[number];// SkillType now works as enum
 A Tuple is an array of types. It can be used while working with 2D data, like a row of a table or an excel.
 
 `type TableRow = [number, string, number]`
+
+### Generics
+
+Generics are used to create reusable code where value can be of many type
+
+```
+    function getSecondElement<T>(array: T[]) {
+        return array[1];
+    }
+
+    const a = [1, 2, 3];
+    const b = ['a', 'b', 'c'];
+
+    const res1 = getSecondElement(a)
+    const res2 = getSecondElement(b)
+```
+
+A generic type `<T>` is specified for function `getSecondElement`
+
+```
+    type APIResponse<TData> = {
+        data: TData,
+        isError: boolean
+    }
+
+    type UserResponse = APIResponse<{ name: string, age: number }>
+
+    const userRes: UserResponse = {
+        data: {
+            name: "ABC",
+            age: 25
+        },
+        isError: false
+    }
+```
+
+`<TData>` is used to specify type of `data`. It is later specified in
+`APIResponse<{ name: string, age: number }>`
+
+```
+    function aToO<T>(arr: [string, T][]) {
+        let obj: {
+            [index: string]: T
+        } = {};
+
+        arr.forEach(([key, value]) => {
+            obj[key] = value
+        });
+
+        return obj;
+    }
+
+    const arr: [string, number | boolean][] = [
+        ['key1', 1], ['key2', 2], ['key3', true]
+    ]
+
+    let convertedObj = aToO(arr);
+```
+
+Using generics to create a function to convert a 2D array into an object
+
+### Async functions
+
+```
+async function wait(duration: number): Promise<string> {
+    return new Promise<string>(resolve => {
+        setTimeout(() => resolve('Hi'), duration);
+    })
+}
+
+
+wait(1000).then(value => console.log(value.length))
+```
+
+Need to specify the return type of a `Promise`. Here, since we are returning a string, `Promise<string>` is specified. We can also use the same for return type of the function.
