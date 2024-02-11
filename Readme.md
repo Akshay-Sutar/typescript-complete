@@ -403,3 +403,30 @@ wait(1000).then(value => console.log(value.length))
 ```
 
 Need to specify the return type of a `Promise`. Here, since we are returning a string, `Promise<string>` is specified. We can also use the same for return type of the function.
+
+### Pick and Omit
+
+```
+    type Todo = {
+        id: string;
+        name: string;
+        status: string;
+        completed: boolean;
+    }
+
+    // want to create a new Type NewTodo, which has all the props of Todo, except for id. Use <Pick> to pick selected props from Todo
+    type NewTodo = Pick<Todo, 'name' | 'status' | 'completed'>;
+
+    //Omit. Similar to Pick but omits the specified the props
+
+    type NewTodo1 = Omit<Todo, 'id'>
+
+    function saveTodo(todo: NewTodo) {
+        return { ...todo, id: crypto.randomUUID() }
+    }
+
+    function renderTodo(todo: Todo) {
+        const div = document.createElement('div')
+        div.id = todo.id
+    }
+```
